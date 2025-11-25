@@ -4,14 +4,14 @@ import { api } from "@/convex/_generated/api"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import EmptyState from "@/components/EmptyState"
 import LoaderSpinner from "@/components/Loader"
 import PodcastCard from "@/components/PodcastCard"
 import SearchBar from "@/components/SearchBar"
 import { useSearchParams } from "next/navigation"
 
-export default function Discover() {
+function DiscoverContent() {
 	const search = useSearchParams().get("search")
 
 	const podcastData = useQuery(api.podcasts.getPodcastBySearch, {
@@ -49,5 +49,13 @@ export default function Discover() {
 				)}
 			</div>
 		</div>
+	)
+}
+
+export default function DiscoverPage() {
+	return (
+		<Suspense fallback={<LoaderSpinner />}>
+			<DiscoverContent />
+		</Suspense>
 	)
 }
